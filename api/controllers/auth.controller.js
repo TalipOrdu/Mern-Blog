@@ -1,6 +1,9 @@
 import User from '../models/user.model.js'
 import bcryptjs from "bcryptjs";
-import { errorHandler } from '../utils/error.js';
+import jwt from "jsonwebtoken";
+import {
+    errorHandler
+} from '../utils/error.js';
 
 
 export const signup = async (req, res, next) => {
@@ -11,22 +14,56 @@ export const signup = async (req, res, next) => {
     } = req.body;
 
     if (!username || !email || !password || username === '' || email === '' || password === '') {
-       
-        next(errorHandler(400,'All fields must be filled out'));
+
+        next(errorHandler(400, 'All fields must be filled out'));
     }
     const hashPassword = bcryptjs.hashSync(password, 10);
 
     const newUser = new User({
         username,
         email,
-        password : hashPassword
+        password: hashPassword
     });
 
     try {
         await newUser.save();
-        res.json({message: 'Signed Up Successfully!'});
-        
+        res.json({
+            message: 'Signed Up Successfully!'
+        });
+
     } catch (err) {
         next(err)
+    }
+}
+
+export const signin = async (req, res, next) => {
+    const {
+        email,
+        password
+    } = req.body;
+
+    if (!email || !password || email === '' || password === '') {
+        next(errorHandler(400, 'All  field must be filled out'))
+    }
+
+    try {
+        const validUser = await User.findOne({email});
+        if(!validUser){
+            return next(errorHandler(404,'Email is not registered'));
+        }
+        const validPassword = bcryptjs.compareSync(password, validUser.password);
+        if(!validPassword){
+            return next(errorHandler(400,'invalid password'))
+        }
+        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET, {expiresIn: "1h"});
+        const {password:pass, ...rest} = validUser._doc;
+
+        res.status(200).cookie('access_token', token, {
+            httpOnly: true
+        }).json(rest);
+
+
+    }catch(error){
+        next(error);
     }
 }
