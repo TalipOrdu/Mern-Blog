@@ -15,10 +15,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    profilePicture: {
+        type: String,
+        default: "https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png",
+    },
 }, {
     timestamps: true
 });
 
-const User = mongoose.model( 'User', userSchema );
+const User = mongoose.model('User', userSchema);
 
 export default User;
