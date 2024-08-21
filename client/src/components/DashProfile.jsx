@@ -131,6 +131,7 @@ export default function DashProfile() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -161,6 +162,8 @@ export default function DashProfile() {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
+      console.log("Current User ID:", currentUser._id);
+      
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",

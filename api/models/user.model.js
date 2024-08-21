@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png",
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+
+    },
 }, {
     timestamps: true
 });
