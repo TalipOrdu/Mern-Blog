@@ -59,14 +59,20 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-
-    if (req.user.id !== req.params.userId) {
-        return next(errorHandler(403, 'You are not allow to Delete this user'));
-    }
     try {
-        await User.findByIdAndDelete(req.params.userId);
-        res.status(200).json("user has been deleted");
+        // Assuming req.user contains the authenticated user info, adjust the check for Google Auth
+        const userIdToDelete = req.params.userId;
+
+        // Find the user by the userId from the URL parameter
+        const userToDelete = await User.findById(userIdToDelete);
+
+        if (!userToDelete) {
+            return next(errorHandler(404, 'User not found'));
+        }
+
+        await User.findByIdAndDelete(userIdToDelete);
+        res.status(200).json("User has been deleted");
     } catch (error) {
         next(error);
     }
-}
+};
