@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 
+
 export default function DashProfile() {
   const navigate = useNavigate();
   const { currentUser, error, loading } = useSelector((state) => state.user);

@@ -1,16 +1,18 @@
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiArrowSmRight } from "react-icons/hi";
+import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function DashSideBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [tab, setTab] = useState("");
+  const {currentUser} = useSelector((state)=> state.user);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -20,40 +22,54 @@ export default function DashSideBar() {
     }
   }, [location.search]);
 
-  const handleSignout = async()=>{
+  const handleSignout = async () => {
     try {
-      const res = await fetch('/api/user/signout',{
-        method:'POST',
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         console.log(data.message);
-
-      }else {
+      } else {
         dispatch(signoutSuccess());
         navigate("/sign-in");
       }
     } catch (error) {
       console.log(error.message);
-      
     }
-  }
+  };
 
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
-        <Sidebar.ItemGroup>
+        <Sidebar.ItemGroup className="flex flex-col gap-1">
           <Sidebar.Item
             as={Link}
             to="/dashboard?tab=profile"
             active={tab === "profile"}
             icon={HiUser}
-            label={"User"}
+            label={currentUser.isAdmin ? 'Admin': 'User'}
             labelColor="dark"
           >
             Profile
           </Sidebar.Item>
-          <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer" onClick={handleSignout}>
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=posts">
+              <Sidebar.Item
+                active={tab === "posts"}
+                icon={HiDocumentText}
+                as="div"
+              >
+                Posts
+              </Sidebar.Item>
+            </Link>
+          )}
+
+          <Sidebar.Item
+            icon={HiArrowSmRight}
+            className="cursor-pointer"
+            onClick={handleSignout}
+          >
             Sign Out
           </Sidebar.Item>
         </Sidebar.ItemGroup>
