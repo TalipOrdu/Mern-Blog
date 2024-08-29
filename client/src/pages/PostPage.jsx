@@ -1,4 +1,4 @@
-import { Button, Spinner } from "flowbite-react";
+import { Alert, Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -7,7 +7,6 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
   const [error, setError] = useState(false);
-  console.log(error);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -38,6 +37,15 @@ export default function PostPage() {
         <Spinner size="xl" />
       </div>
     );
+    if (error) {
+        return (
+          <div className="flex items-center justify-center min-h-screen">
+            <Alert color="failure">
+              Something went wrong while loading the post. Please try again later.
+            </Alert>
+          </div>
+        );
+      }
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
@@ -54,7 +62,7 @@ export default function PostPage() {
       <img
         src={post && post.image}
         alt={post && post.title}
-        className="mt-10 p-3 max-h-[600] w-full object-cover"
+        className="mt-3 p-16 pt-4 max-h-screen object-cover rounded-3xl"
       />
       <div className="flex justify-between p-3 border-b border-slate-300 mx-auto w-full max-w-2xl ">
         <span className="">

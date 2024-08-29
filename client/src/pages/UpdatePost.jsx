@@ -19,9 +19,11 @@ export default function UpdatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({
+    _id: "",  // Ensure this is initialized
     title: "",
     content: "",
     category: "",
+    image: "",
   });
   const [publishError, setPublishError] = useState(null);
   const { postId } = useParams();
@@ -90,8 +92,7 @@ export default function UpdatePost() {
     e.preventDefault();
     try {
       const url = `/api/post/updatepost/${formData._id}/${currentUser._id}`;
-      console.log("Sending request to URL:", url); // Log the URL for debugging
-
+      
       const res = await fetch(url, {
         method: "PUT",
         headers: {
