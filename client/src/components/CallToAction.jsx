@@ -1,6 +1,6 @@
 export default function CallToAction() {
   return (
-    <div className="flex flex-col sm:flex-row border border-gray-300 rounded-tl-3xl rounded-br-3xl p-6 justify-center items-center m-12 mt-4 shadow-md">
+    <div className="flex flex-col sm:flex-row border border-gray-300 rounded-tl-3xl rounded-br-3xl p-6 justify-center items-center m-14 mt-4 mb-4 shadow-md">
       {/* Image Section */}
       <div className="sm:w-1/3 mb-4 sm:mb-0">
         <img
