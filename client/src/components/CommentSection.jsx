@@ -1,8 +1,8 @@
 import { Alert, Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Comment from "./Comment";
 
 export default function CommentSection({ postId }) {
@@ -10,7 +10,8 @@ export default function CommentSection({ postId }) {
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
-  
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -57,6 +58,39 @@ export default function CommentSection({ postId }) {
     getComments();
   }, [postId]);
 
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+  
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`, // Pass token in the header if required
+        },
+      });
+  
+      if (res.ok) {
+        const data = await res.json();
+        setComments(
+          comments.map((comment) => 
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -105,26 +139,24 @@ export default function CommentSection({ postId }) {
           {commentError && (
             <p className="text-red-500 text-xs mt-3">{commentError}</p>
           )}
-          {commentError &&(
-            <Alert color="failure">{commentError}</Alert>
-          )}
+          {commentError && <Alert color="failure">{commentError}</Alert>}
         </form>
       )}
       {comments.length === 0 ? (
         <p className="text-sm my-4">No comments yet!</p>
-      ):(
+      ) : (
         <>
-        <div className="text-sm my-5 flex items-center gap-1">
-          <p>Comments</p>
-          <div className="border border-gray-400 px-2 py-1 rounded-sm">
-            <p>{comments.length}</p>
+          <div className="text-sm my-5 flex items-center gap-1">
+            <p>Comments</p>
+            <div className="border border-gray-400 px-2 py-1 rounded-sm">
+              <p>{comments.length}</p>
+            </div>
           </div>
-        </div>
-        {comments.map(comment => (
-          <Comment key={comment._id} comment={comment}/>
-        ))}
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
+          ))}
         </>
-      ) }
+      )}
     </div>
   );
 }
