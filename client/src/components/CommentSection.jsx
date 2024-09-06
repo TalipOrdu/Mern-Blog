@@ -37,7 +37,7 @@ export default function CommentSection({ postId }) {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
+        
         setComment("");
         setCommentError(null);
         setComments([data, ...comments]);
@@ -112,8 +112,6 @@ export default function CommentSection({ postId }) {
         method: "DELETE",
       });
       if (res.ok) {
-        const data = await res.json();
-
         setComments(comments.filter((comment) => comment._id !== commentId));
       }
     } catch (error) {

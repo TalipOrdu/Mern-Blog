@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
   const [error, setError] = useState(false);
+  const [recentPosts, setRecentPosts] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -33,21 +35,37 @@ export default function PostPage() {
     };
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    try {
+      const fetchRecentPosts = async () => {
+        const res = await fetch(`/api/post/getposts?limit=3`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        }
+      };
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Spinner size="xl" />
       </div>
     );
-    if (error) {
-        return (
-          <div className="flex items-center justify-center min-h-screen">
-            <Alert color="failure">
-              Something went wrong while loading the post. Please try again later.
-            </Alert>
-          </div>
-        );
-      }
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Alert color="failure">
+          Something went wrong while loading the post. Please try again later.
+        </Alert>
+      </div>
+    );
+  }
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
@@ -61,12 +79,14 @@ export default function PostPage() {
           {post && post.category}
         </Button>
       </Link>
-      <img
-        src={post && post.image}
-        alt={post && post.title}
-        className="mt-3 p-16 pt-4 max-h-screen object-cover rounded-3xl"
-      />
-      <div className="flex justify-between p-3 border-b border-slate-300 mx-auto w-full max-w-2xl ">
+      <div className="my-5 max-w-4xl mx-auto rounded-3xl overflow-hidden">
+        <img
+          src={post && post.image}
+          alt={post && post.title}
+          className="w-full object-cover"
+        />
+      </div>
+      <div className="flex justify-between p-3 border-b border-slate-300 mx-auto w-full max-w-4xl ">
         <span className="">
           {post && new Date(post.createdAt).toLocaleDateString()}
         </span>
@@ -75,13 +95,21 @@ export default function PostPage() {
         </span>
       </div>
       <div
-        className="p-3 max-w-2xl mx-auto w-full post-content"
+        className="p-3 max-w-4xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       <div className="max-w-4xl mx-auto w-full">
-        <CallToAction/>
+        <CallToAction />
       </div>
-      <CommentSection postId={post._id}/>
+      <CommentSection postId={post._id} />
+
+      <div className="flex flex-col justify-center items-center mb-4">
+        <h1 className="text-xl mt-4">Recent Articles</h1>
+        <div className="flex flex-wrap gap-5 mt-4 justify-center">
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
+        </div>
+      </div>
     </main>
   );
 }
