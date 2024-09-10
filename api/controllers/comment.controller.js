@@ -124,7 +124,7 @@ export const getcomments = async (req, res, next) => {
     res.status(200).json({comments, totalComments, lastMonthComments});
 
   } catch (error) {
-    console.error('Error fetching comments:', error);
+    
     next(error)
   }
 }
