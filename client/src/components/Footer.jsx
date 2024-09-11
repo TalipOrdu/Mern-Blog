@@ -23,14 +23,14 @@ export default function FooterCom() {
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
                 <Footer.Link
-                  href="https://www.google.com"
+                  href="https://github.com/TalipOrdu"
                   target="_blank"
                   rel={`noopener noreferrer`}
                 >
                   My Projects
                 </Footer.Link>
                 <Footer.Link
-                  href="https://www.google.com"
+                  href="/"
                   target="_blank"
                   rel={`noopener noreferrer`}
                 >
@@ -49,7 +49,7 @@ export default function FooterCom() {
                   Github
                 </Footer.Link>
                 <Footer.Link
-                  href="#"
+                  href="https://discord.com/users/776821751781785622"
                   target="_blank"
                   rel={`noopener noreferrer`}
                 >
@@ -82,10 +82,10 @@ export default function FooterCom() {
         <div className="w-full sm:flex sm:items-center sm:justify-between">
             <Footer.Copyright href="#" by="Talip's Blog" year={new Date().getFullYear()}/>
             <div className="flex gap-6 sm:mt-2 mt-4 sm:justify-center">
-                <Footer.Icon href="#" icon={BsLinkedin}/>
-                <Footer.Icon href="#" icon={BsInstagram}/>
-                <Footer.Icon href="#" icon={BsGithub}/>
-                <Footer.Icon href="#" icon={BsDribbble}/>
+                <Footer.Icon href="https://www.linkedin.com/in/talipordu/" icon={BsLinkedin}/>
+                <Footer.Icon href="https://www.instagram.com/talip.012/" icon={BsInstagram}/>
+                <Footer.Icon href="https://github.com/TalipOrdu" icon={BsGithub}/>
+                <Footer.Icon href="https://portfoliopage11.netlify.app/" icon={BsDribbble}/>
             </div>
         </div>
       </div>
