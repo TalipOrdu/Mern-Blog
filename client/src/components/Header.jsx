@@ -7,14 +7,24 @@ import { useDispatch } from "react-redux";
 import  {toggleTheme}  from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom"; 
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
   const path = useLocation().pathname;
+  const location = useLocation();
   const {currentUser} = useSelector(state => state.user);
   const  dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
+  const [searchTerm, setSearchTerm] = useState('');
   
+  useEffect(()=>{
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFormUrl = urlParams.get('searchTerm');
+    if(searchTermFormUrl){
+      setSearchTerm(searchTermFormUrl);
+    }
+  }, [location.search]);
   const handleSignout = async()=>{
     try {
       const res = await fetch('/api/user/signout',{
@@ -33,6 +43,13 @@ export default function Header() {
       
     }
   }
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm',searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`)
+  }
   return (
     <Navbar className="border-b-2 bg-white">
       <Link
@@ -43,8 +60,8 @@ export default function Header() {
         </span>
         Blog
       </Link>
-      <form>
-        <TextInput type="text" placeholder="search" rightIcon={AiOutlineSearch} className="hidden lg:inline"/>
+      <form onSubmit={handleSubmit}>
+        <TextInput type="text" placeholder="search" rightIcon={AiOutlineSearch} value={searchTerm} onChange={(e)=> setSearchTerm(e.target.value)} className="hidden lg:inline"/>
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch/>
