@@ -31,23 +31,24 @@ npm install
 MONGO_URI=your_mongo_db_connection_string
 JWT_SECRET=your_jwt_secret
 FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-FIREBASE_PROJECT_ID=your_firebase_project_id
 
-# Start frontend server
+Start frontend server
 npm start
-# Start backend server
+Start backend server
 cd ../server
 npm start
 
 #What You Can Do
 
-#Users:
+#Users
+
 Sign up and log in to the platform.
 Create, read, edit, and delete blog posts.
 Customize their profile and upload a profile picture.
 Toggle between light and dark modes.
-#Admins:
+
+#Admins
+
 Manage all user-generated content.
 Create, edit, and delete posts made by any user.
 Access the admin dashboard for enhanced management features.
