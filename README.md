@@ -40,13 +40,14 @@ npm start
 cd ../server
 npm start
 
-What You Can Do:
-Users:
+#What You Can Do
+
+#Users:
 Sign up and log in to the platform.
 Create, read, edit, and delete blog posts.
 Customize their profile and upload a profile picture.
 Toggle between light and dark modes.
-Admins:
+#Admins:
 Manage all user-generated content.
 Create, edit, and delete posts made by any user.
 Access the admin dashboard for enhanced management features.
