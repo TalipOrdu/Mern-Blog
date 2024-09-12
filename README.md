@@ -14,8 +14,7 @@ Image Upload: Firebase storage integration for profile and post images.
 Responsive Design: Built using React and Tailwind CSS for modern UI/UX.
 Dashboard: Admin and user dashboards for managing content.
 
-## Installation Guide:
-
+#Installation Guide:
 To run this project locally, follow these steps:
 
 # 1. Clone the repository:
@@ -37,8 +36,17 @@ FIREBASE_PROJECT_ID=your_firebase_project_id
 
 # Start frontend server
 npm start
-
 # Start backend server
 cd ../server
 npm start
 
+What You Can Do:
+Users:
+Sign up and log in to the platform.
+Create, read, edit, and delete blog posts.
+Customize their profile and upload a profile picture.
+Toggle between light and dark modes.
+Admins:
+Manage all user-generated content.
+Create, edit, and delete posts made by any user.
+Access the admin dashboard for enhanced management features.
