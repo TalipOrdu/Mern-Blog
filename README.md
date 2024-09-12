@@ -38,7 +38,7 @@ Start backend server
 cd ../server
 npm start
 
-# What You Can Do
+## What You Can Do
 
 # Users
 Sign up and log in to the platform.
